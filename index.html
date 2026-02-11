@@ -13,9 +13,7 @@
             --bg: #f4f6f8;
             --text: #2d3436;
             --white: #ffffff;
-            --glass: rgba(255, 255, 255, 0.15);
             --danger: #ff7675;
-            --success: #00b894;
         }
 
         body {
@@ -49,107 +47,62 @@
         }
 
         /* --- HEADER --- */
-        .header-nav {
-            padding: 15px 20px;
-            background: #fff;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #f0f0f0;
-            z-index: 10;
-        }
-
+        .header-nav { padding: 15px 20px; background: #fff; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f0f0f0; }
         .brand-title { font-size: 1.2rem; font-weight: 800; color: var(--text); }
         .logout-btn { font-size: 0.85rem; color: var(--danger); background: none; border: none; cursor: pointer; font-weight: 600; }
 
         /* --- CONTENT --- */
-        .content-area { flex: 1; overflow-y: auto; background: var(--bg); position: relative; }
-        .view-section { display: none; padding: 20px; animation: fadeIn 0.3s ease; }
+        .content-area { flex: 1; overflow-y: auto; background: var(--bg); }
+        .view-section { display: none; padding: 20px; }
         .view-section.active { display: block; }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-
         /* --- WALLET CARD --- */
-        .wallet-card {
-            background: linear-gradient(135deg, var(--primary), #a29bfe);
-            border-radius: 20px;
-            padding: 25px;
-            color: white;
-            box-shadow: 0 10px 20px rgba(108, 92, 231, 0.3);
-            position: relative;
-            overflow: hidden;
-            margin-bottom: 25px;
-        }
-        .wallet-card::before {
-            content: ''; position: absolute; top: -50px; right: -50px; width: 150px; height: 150px;
-            background: var(--glass); border-radius: 50%;
-        }
+        .wallet-card { background: linear-gradient(135deg, var(--primary), #a29bfe); border-radius: 20px; padding: 25px; color: white; margin-bottom: 25px; }
         .balance-amount { font-size: 2.5rem; font-weight: 700; margin: 5px 0 20px; display: block; }
 
         /* --- FORMS --- */
-        .form-card { background: white; padding: 20px; border-radius: 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.03); margin-bottom: 20px; }
+        .form-card { background: white; padding: 20px; border-radius: 16px; margin-bottom: 20px; }
         label { display: block; margin-bottom: 8px; font-size: 0.85rem; color: #636e72; font-weight: 600; }
-        input {
-            width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 10px;
-            font-size: 1rem; box-sizing: border-box; outline: none; margin-bottom: 15px;
-        }
+        input { width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 1rem; box-sizing: border-box; outline: none; margin-bottom: 15px; }
         input:focus { border-color: var(--primary); }
-        .btn-primary {
-            background: var(--primary); color: white; width: 100%; padding: 14px;
-            border: none; border-radius: 10px; font-size: 1rem; font-weight: bold; cursor: pointer;
-        }
-        .btn-secondary {
-            background: transparent; color: var(--primary); width: 100%; padding: 14px;
-            border: none; font-size: 0.9rem; font-weight: bold; cursor: pointer; margin-top: 10px;
-        }
+        .btn-primary { background: var(--primary); color: white; width: 100%; padding: 14px; border: none; border-radius: 10px; font-size: 1rem; font-weight: bold; cursor: pointer; }
+        .btn-secondary { background: transparent; color: var(--primary); width: 100%; padding: 14px; border: none; font-size: 0.9rem; font-weight: bold; cursor: pointer; margin-top: 10px; }
 
-        /* --- CHIPS & QR --- */
-        .chip-container { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 10px; }
-        .chip { background: #fff; border: 1px solid #ddd; padding: 8px 16px; border-radius: 20px; font-size: 0.85rem; cursor: pointer; white-space: nowrap; }
-        .qr-box { text-align: center; background: #fff; padding: 15px; border-radius: 12px; border: 1px dashed #ccc; margin-top: 15px; display: none; }
-        .qr-box.visible { display: block; }
+        /* --- AUTH SCREEN --- */
+        #auth-screen { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: white; z-index: 100; display: flex; flex-direction: column; justify-content: center; padding: 40px; }
+        #error-msg { color: #e74c3c; background: #fadbd8; padding: 10px; border-radius: 8px; margin-bottom: 15px; font-size: 0.9rem; display: none; text-align: center; }
 
         /* --- BOTTOM NAV --- */
         .bottom-nav { background: white; border-top: 1px solid #eee; display: flex; padding: 10px 0 15px; }
         .nav-item { flex: 1; text-align: center; color: #b2bec3; cursor: pointer; font-size: 0.75rem; font-weight: 600; }
         .nav-item.active { color: var(--primary); }
         .nav-icon { display: block; margin: 0 auto 4px; width: 24px; height: 24px; fill: currentColor; }
-
-        /* --- AUTH SCREEN --- */
-        #auth-screen {
-            position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: white;
-            z-index: 100; display: flex; flex-direction: column; justify-content: center; padding: 40px;
-        }
         
-        #loading-overlay {
-            position: absolute; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.8);
-            z-index: 200; display:none; align-items:center; justify-content:center;
-        }
-        .spinner { border: 4px solid #f3f3f3; border-top: 4px solid var(--primary); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
+        /* --- QR --- */
+        .chip-container { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 10px; }
+        .chip { background: #fff; border: 1px solid #ddd; padding: 8px 16px; border-radius: 20px; font-size: 0.85rem; cursor: pointer; white-space: nowrap; }
+        .qr-box { text-align: center; background: #fff; padding: 15px; border-radius: 12px; border: 1px dashed #ccc; margin-top: 15px; display: none; }
+        .qr-box.visible { display: block; }
     </style>
 </head>
 <body>
 
     <div class="app-container">
         
-        <div id="loading-overlay"><div class="spinner"></div></div>
-
         <div id="auth-screen">
             <h1 style="color: var(--primary); margin-bottom: 5px;">Laxmi Trade</h1>
-            <p style="color: #666; margin-bottom: 40px;" id="auth-title">Partner Login</p>
+            <p style="color: #666; margin-bottom: 30px;" id="auth-title">Partner Login</p>
             
+            <div id="error-msg"></div>
+
             <label>Mobile Number</label>
             <input type="tel" id="auth-mobile" placeholder="9876543210" maxlength="10">
             
             <label>Password</label>
-            <input type="password" id="auth-pass" placeholder="••••••••">
+            <input type="password" id="auth-pass" placeholder="Minimum 6 characters">
             
             <button class="btn-primary" onclick="handleAuth()" id="auth-btn">Login</button>
             <button class="btn-secondary" onclick="toggleAuthMode()" id="toggle-auth-btn">Create New Account</button>
-            
-            <p style="text-align: center; margin-top: 20px; font-size: 0.8rem; color: #999;">Secured by Supabase</p>
         </div>
 
         <div id="main-app" style="display: none; flex-direction: column; height: 100%;">
@@ -163,25 +116,22 @@
                     <div class="wallet-card">
                         <span class="balance-label">Total Balance</span>
                         <span class="balance-amount" id="display-balance">₹0.00</span>
-                        <div style="font-size: 0.9rem; opacity: 0.9;" id="display-mobile">Loading...</div>
+                        <div style="font-size: 0.9rem; opacity: 0.9;" id="display-mobile">...</div>
                     </div>
                     
                     <div class="form-card">
                         <label>Add Funds</label>
                         <div class="chip-container">
                             <div class="chip" onclick="setAmount(100)">+100</div>
-                            <div class="chip" onclick="setAmount(200)">+200</div>
                             <div class="chip" onclick="setAmount(500)">+500</div>
                             <div class="chip" onclick="setAmount(1000)">+1000</div>
                         </div>
                         <input type="number" id="amount-field" placeholder="Enter Amount" oninput="updateQR()">
-                        
                         <div id="qr-area" class="qr-box">
                             <img id="qr-img" src="" alt="QR" style="width: 150px;">
-                            <p style="font-size: 0.8rem; color: #666; margin-top: 10px;">Scan to Pay</p>
+                            <p style="font-size: 0.8rem; color: #666;">Scan to Pay</p>
                         </div>
-                        
-                        <button class="btn-primary" style="margin-top:15px;" onclick="triggerUPI()">Pay via UPI App</button>
+                        <button class="btn-primary" onclick="triggerUPI()">Pay via UPI App</button>
                     </div>
                 </div>
 
@@ -191,7 +141,7 @@
                         <label>Account Holder Name</label><input type="text" id="w-name">
                         <label>Bank Account Number</label><input type="password" id="w-acc">
                         <label>IFSC Code</label><input type="text" id="w-ifsc">
-                        <label>Withdraw Amount</label><input type="number" id="w-amount">
+                        <label>Amount</label><input type="number" id="w-amount">
                         <button class="btn-primary" onclick="submitWithdraw()">Request Withdrawal</button>
                     </div>
                 </div>
@@ -200,7 +150,7 @@
                     <h2 style="margin-top:0;">Profile</h2>
                     <div class="form-card">
                         <label>Full Name</label><input type="text" id="p-name">
-                        <label>Mobile Number (Read-only)</label><input type="tel" id="p-mobile" readonly style="background:#f0f0f0;">
+                        <label>Mobile</label><input type="tel" id="p-mobile" readonly style="background:#f0f0f0;">
                         <button class="btn-primary" onclick="saveProfile()">Update Profile</button>
                     </div>
                 </div>
@@ -221,93 +171,70 @@
     </div>
 
     <script>
-        // ------------------------------------------------------------------
-        // CONFIGURATION: CONNECTED TO YOUR SUPABASE
-        // ------------------------------------------------------------------
+        // --- SUPABASE CONFIG ---
         const SUPABASE_URL = 'https://vbfiqtmrkeqrcmggcvqp.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZiZmlxdG1ya2VxcmNtZ2djdnFwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA3OTM3NTksImV4cCI6MjA4NjM2OTc1OX0.siYnLh0PHEp5wk0lhxMmTCF42o1GMTxkQG9uGyhMwhk';
-        // ------------------------------------------------------------------
-
-        // Initialize Supabase
         const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        
+
         let currentUser = null;
         let isLoginMode = true;
         const DOMAIN_SUFFIX = "@laxmitrade.com"; 
 
-        // --- AUTH FUNCTIONS ---
+        // --- AUTH LOGIC ---
+        function showError(msg) {
+            const el = document.getElementById('error-msg');
+            el.innerText = msg;
+            el.style.display = 'block';
+            setTimeout(() => el.style.display = 'none', 5000);
+        }
+
         function toggleAuthMode() {
             isLoginMode = !isLoginMode;
             document.getElementById('auth-title').innerText = isLoginMode ? "Partner Login" : "Create Account";
             document.getElementById('auth-btn').innerText = isLoginMode ? "Login" : "Sign Up";
             document.getElementById('toggle-auth-btn').innerText = isLoginMode ? "Create New Account" : "Back to Login";
+            document.getElementById('error-msg').style.display = 'none';
         }
 
         async function handleAuth() {
             const mobile = document.getElementById('auth-mobile').value;
             const pass = document.getElementById('auth-pass').value;
 
-            if(!mobile || mobile.length < 10) return alert("Please enter a valid 10-digit mobile number");
-            if(!pass || pass.length < 6) return alert("Password must be at least 6 characters");
+            if(!mobile || mobile.length < 10) return showError("Enter valid 10-digit mobile number");
+            if(!pass || pass.length < 6) return showError("Password must be 6+ characters");
 
-            // Convert Mobile to "Fake" Email
-            const virtualEmail = mobile + DOMAIN_SUFFIX;
+            const email = mobile + DOMAIN_SUFFIX;
+            const btn = document.getElementById('auth-btn');
+            const originalText = btn.innerText;
+            btn.innerText = "Processing...";
+            btn.disabled = true;
 
-            showLoading(true);
-            
-            if(isLoginMode) {
-                // LOGIN
-                const { data, error } = await supabase.auth.signInWithPassword({ email: virtualEmail, password: pass });
-                if(error) {
-                    alert("Login Failed: " + error.message);
-                }
-            } else {
-                // SIGN UP
-                const { data, error } = await supabase.auth.signUp({ 
-                    email: virtualEmail, 
-                    password: pass
-                });
-                
-                if(error) {
-                    alert("Sign Up Error: " + error.message);
-                    showLoading(false);
-                    return;
-                }
-
-                if(data.user) {
-                    // 2. CHECK if profile exists (to prevent duplicate key error)
-                    const { data: profileCheck } = await supabase.from('profiles').select('id').eq('id', data.user.id).single();
-
-                    if(!profileCheck) {
-                        // 3. Create Profile MANUALLY if it doesn't exist
-                        const { error: dbError } = await supabase
-                            .from('profiles')
-                            .insert([
-                                { 
-                                    id: data.user.id, 
-                                    email: virtualEmail, 
-                                    mobile: mobile, 
-                                    balance: 0 
-                                }
-                            ]);
-                        
-                        if(dbError && dbError.code !== '23505') { 
-                            console.error("Profile creation warning:", dbError);
-                        }
-                    }
+            try {
+                if(isLoginMode) {
+                    // LOGIN FLOW
+                    const { data, error } = await supabase.auth.signInWithPassword({ email, password: pass });
+                    if(error) throw error;
+                } else {
+                    // SIGNUP FLOW
+                    const { data, error } = await supabase.auth.signUp({ email, password: pass });
+                    if(error) throw error;
                     
-                    // FORCE LOGIN IMMEDIATELY
-                    const { error: loginError } = await supabase.auth.signInWithPassword({ email: virtualEmail, password: pass });
-                    
-                    if(!loginError) {
-                        // Login success, the onAuthStateChange listener will take over
-                    } else {
-                        alert("Account created! Please login now.");
-                        toggleAuthMode(); // Switch back to login view
+                    if(data.user && !data.session) {
+                        throw new Error("Please disable 'Confirm Email' in Supabase Dashboard!");
                     }
+
+                    // Create Profile (Upsert to prevent errors)
+                    await supabase.from('profiles').upsert([
+                        { id: data.user.id, email: email, mobile: mobile, balance: 0 }
+                    ]);
+                    
+                    alert("Account Created! Logging you in...");
                 }
+            } catch(err) {
+                showError(err.message);
+                btn.innerText = originalText;
+                btn.disabled = false;
             }
-            showLoading(false);
         }
 
         async function userLogout() {
@@ -315,117 +242,76 @@
             window.location.reload();
         }
 
-        // --- REALTIME & DATA LOADING ---
+        // --- APP INITIALIZATION ---
         supabase.auth.onAuthStateChange(async (event, session) => {
-            showLoading(true);
             if (session) {
                 currentUser = session.user;
                 document.getElementById('auth-screen').style.display = 'none';
                 document.getElementById('main-app').style.display = 'flex';
                 
-                // Display Mobile
-                const displayMobile = currentUser.email ? currentUser.email.replace(DOMAIN_SUFFIX, '') : 'User';
-                document.getElementById('display-mobile').innerText = displayMobile;
-                
+                // Set Display Info
+                const mob = currentUser.email.replace(DOMAIN_SUFFIX, '');
+                document.getElementById('display-mobile').innerText = mob;
+                document.getElementById('p-mobile').value = mob;
+
                 fetchProfile();
-                
-                // Realtime Balance Listener
-                supabase
-                    .channel('public:profiles')
-                    .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'profiles', filter: `id=eq.${currentUser.id}` }, payload => {
-                        if(payload.new.balance !== undefined) {
+
+                // Realtime Balance
+                supabase.channel('public:profiles')
+                    .on('postgres_changes', { event: '*', schema: 'public', table: 'profiles', filter: `id=eq.${currentUser.id}` }, payload => {
+                        if(payload.new && payload.new.balance !== undefined) {
                             document.getElementById('display-balance').innerText = `₹${payload.new.balance}`;
                         }
-                    })
-                    .subscribe();
+                    }).subscribe();
 
             } else {
                 document.getElementById('auth-screen').style.display = 'flex';
                 document.getElementById('main-app').style.display = 'none';
+                document.getElementById('auth-btn').innerText = isLoginMode ? "Login" : "Sign Up";
+                document.getElementById('auth-btn').disabled = false;
             }
-            showLoading(false);
         });
 
         async function fetchProfile() {
-            const { data, error } = await supabase
-                .from('profiles')
-                .select('*')
-                .eq('id', currentUser.id)
-                .single();
-                
-            if (data) {
+            const { data } = await supabase.from('profiles').select('*').eq('id', currentUser.id).single();
+            if(data) {
                 document.getElementById('display-balance').innerText = `₹${data.balance}`;
                 document.getElementById('p-name').value = data.full_name || '';
-                document.getElementById('p-mobile').value = data.mobile || '';
-                
-                // Pre-fill withdrawal
                 document.getElementById('w-name').value = data.full_name || '';
                 document.getElementById('w-acc').value = data.bank_acc || '';
                 document.getElementById('w-ifsc').value = data.ifsc || '';
-            } else {
-                // If profile is missing (rare bug), create it now
-                const mobile = currentUser.email.replace(DOMAIN_SUFFIX, '');
-                await supabase.from('profiles').insert([{ id: currentUser.id, email: currentUser.email, mobile: mobile, balance: 0 }]);
-                fetchProfile(); // Retry
             }
         }
 
-        // --- APP ACTIONS ---
+        // --- ACTIONS ---
         async function saveProfile() {
             const name = document.getElementById('p-name').value;
-            showLoading(true);
-            const { error } = await supabase
-                .from('profiles')
-                .update({ full_name: name })
-                .eq('id', currentUser.id);
-
-            if(error) alert("Error saving: " + error.message);
-            else alert("Profile Updated Successfully!");
-            showLoading(false);
+            await supabase.from('profiles').update({ full_name: name }).eq('id', currentUser.id);
+            alert("Saved!");
         }
 
         async function submitWithdraw() {
             const amount = document.getElementById('w-amount').value;
             const bankAcc = document.getElementById('w-acc').value;
             const ifsc = document.getElementById('w-ifsc').value;
+            if(!amount || amount < 100) return alert("Min withdrawal ₹100");
 
-            if(!amount || amount < 100) return alert("Minimum withdrawal is ₹100");
-
-            showLoading(true);
-
-            // 1. Save Bank details
             await supabase.from('profiles').update({ bank_acc: bankAcc, ifsc: ifsc }).eq('id', currentUser.id);
-
-            // 2. Insert into withdrawals
-            const { error } = await supabase
-                .from('withdrawals')
-                .insert([{ user_id: currentUser.id, amount: amount, status: 'pending' }]);
-
-            if(error) alert("Error: " + error.message);
-            else alert("Withdrawal Request Submitted!");
-
-            showLoading(false);
+            await supabase.from('withdrawals').insert([{ user_id: currentUser.id, amount: amount }]);
+            alert("Withdrawal Pending!");
         }
 
-        function showLoading(show) {
-            document.getElementById('loading-overlay').style.display = show ? 'flex' : 'none';
-        }
-
-        // --- UI UTILS ---
+        // --- UI TABS & QR ---
         const upiId = "cf.graphylabspvtltd@mairtel"; 
-        
         window.switchTab = (tab) => {
             document.querySelectorAll('.view-section').forEach(e => e.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(e => e.classList.remove('active'));
-            
             document.getElementById('view-'+tab).classList.add('active');
             if(tab === 'wallet') document.querySelectorAll('.nav-item')[0].classList.add('active');
             if(tab === 'withdraw') document.querySelectorAll('.nav-item')[1].classList.add('active');
             if(tab === 'profile') document.querySelectorAll('.nav-item')[2].classList.add('active');
         }
-
         window.setAmount = (v) => { document.getElementById('amount-field').value = v; window.updateQR(); }
-        
         window.updateQR = () => {
             const val = document.getElementById('amount-field').value;
             const link = `upi://pay?pa=${upiId}&pn=Graphy&am=${val}&cu=INR`;
@@ -436,7 +322,6 @@
                 document.getElementById('qr-area').classList.remove('visible');
             }
         }
-        
         window.triggerUPI = () => {
             const val = document.getElementById('amount-field').value;
             if(val > 0) window.location.href = `upi://pay?pa=${upiId}&pn=Graphy&am=${val}&cu=INR`;
