@@ -270,24 +270,41 @@
                 
                 if(error) {
                     alert("Sign Up Error: " + error.message);
-                } else if(data.user) {
-                    // Try to create profile. If it fails due to duplicates, ignore it.
-                    const { error: dbError } = await supabase
-                        .from('profiles')
-                        .insert([
-                            { 
-                                id: data.user.id, 
-                                email: virtualEmail, 
-                                mobile: mobile, 
-                                balance: 0 
-                            }
-                        ]);
-                    
-                    if(dbError && dbError.code !== '23505') { // Ignore duplicate key error
-                        console.error("Profile creation warning:", dbError);
+                    showLoading(false);
+                    return;
+                }
+
+                if(data.user) {
+                    // 2. CHECK if profile exists (to prevent duplicate key error)
+                    const { data: profileCheck } = await supabase.from('profiles').select('id').eq('id', data.user.id).single();
+
+                    if(!profileCheck) {
+                        // 3. Create Profile MANUALLY if it doesn't exist
+                        const { error: dbError } = await supabase
+                            .from('profiles')
+                            .insert([
+                                { 
+                                    id: data.user.id, 
+                                    email: virtualEmail, 
+                                    mobile: mobile, 
+                                    balance: 0 
+                                }
+                            ]);
+                        
+                        if(dbError && dbError.code !== '23505') { 
+                            console.error("Profile creation warning:", dbError);
+                        }
                     }
                     
-                    alert("Account created successfully! Logging you in...");
+                    // FORCE LOGIN IMMEDIATELY
+                    const { error: loginError } = await supabase.auth.signInWithPassword({ email: virtualEmail, password: pass });
+                    
+                    if(!loginError) {
+                        // Login success, the onAuthStateChange listener will take over
+                    } else {
+                        alert("Account created! Please login now.");
+                        toggleAuthMode(); // Switch back to login view
+                    }
                 }
             }
             showLoading(false);
@@ -349,6 +366,7 @@
                 // If profile is missing (rare bug), create it now
                 const mobile = currentUser.email.replace(DOMAIN_SUFFIX, '');
                 await supabase.from('profiles').insert([{ id: currentUser.id, email: currentUser.email, mobile: mobile, balance: 0 }]);
+                fetchProfile(); // Retry
             }
         }
 
