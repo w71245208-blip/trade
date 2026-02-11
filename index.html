@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laxmi Trade - Mobile Login</title>
+    <title>Laxmi Trade - Partner App</title>
     
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -233,7 +233,7 @@
         
         let currentUser = null;
         let isLoginMode = true;
-        const DOMAIN_SUFFIX = "@laxmitrade.com"; // Invisible domain for mobile login
+        const DOMAIN_SUFFIX = "@laxmitrade.com"; 
 
         // --- AUTH FUNCTIONS ---
         function toggleAuthMode() {
@@ -248,7 +248,7 @@
             const pass = document.getElementById('auth-pass').value;
 
             if(!mobile || mobile.length < 10) return alert("Please enter a valid 10-digit mobile number");
-            if(!pass) return alert("Please enter a password");
+            if(!pass || pass.length < 6) return alert("Password must be at least 6 characters");
 
             // Convert Mobile to "Fake" Email
             const virtualEmail = mobile + DOMAIN_SUFFIX;
@@ -258,27 +258,35 @@
             if(isLoginMode) {
                 // LOGIN
                 const { data, error } = await supabase.auth.signInWithPassword({ email: virtualEmail, password: pass });
-                if(error) alert("Login Failed: " + error.message);
+                if(error) {
+                    alert("Login Failed: " + error.message);
+                }
             } else {
                 // SIGN UP
-                const { data, error } = await supabase.auth.signUp({ email: virtualEmail, password: pass });
+                const { data, error } = await supabase.auth.signUp({ 
+                    email: virtualEmail, 
+                    password: pass
+                });
                 
                 if(error) {
                     alert("Sign Up Error: " + error.message);
                 } else if(data.user) {
-                    // Create Profile with mobile number
+                    // Try to create profile. If it fails due to duplicates, ignore it.
                     const { error: dbError } = await supabase
                         .from('profiles')
                         .insert([
                             { 
                                 id: data.user.id, 
                                 email: virtualEmail, 
-                                mobile: mobile, // Store actual mobile here
+                                mobile: mobile, 
                                 balance: 0 
                             }
                         ]);
                     
-                    if(dbError) console.error("Profile creation failed", dbError);
+                    if(dbError && dbError.code !== '23505') { // Ignore duplicate key error
+                        console.error("Profile creation warning:", dbError);
+                    }
+                    
                     alert("Account created successfully! Logging you in...");
                 }
             }
@@ -298,18 +306,17 @@
                 document.getElementById('auth-screen').style.display = 'none';
                 document.getElementById('main-app').style.display = 'flex';
                 
-                // Extract mobile from email logic (remove domain)
-                const displayMobile = currentUser.email.replace(DOMAIN_SUFFIX, '');
+                // Display Mobile
+                const displayMobile = currentUser.email ? currentUser.email.replace(DOMAIN_SUFFIX, '') : 'User';
                 document.getElementById('display-mobile').innerText = displayMobile;
                 
-                // Fetch Profile Data
                 fetchProfile();
                 
-                // Subscribe to Realtime Balance Changes
+                // Realtime Balance Listener
                 supabase
                     .channel('public:profiles')
                     .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'profiles', filter: `id=eq.${currentUser.id}` }, payload => {
-                        if(payload.new.balance) {
+                        if(payload.new.balance !== undefined) {
                             document.getElementById('display-balance').innerText = `₹${payload.new.balance}`;
                         }
                     })
@@ -332,21 +339,22 @@
             if (data) {
                 document.getElementById('display-balance').innerText = `₹${data.balance}`;
                 document.getElementById('p-name').value = data.full_name || '';
-                // Ensure mobile is displayed
-                document.getElementById('p-mobile').value = data.mobile || currentUser.email.replace(DOMAIN_SUFFIX, '');
+                document.getElementById('p-mobile').value = data.mobile || '';
                 
-                // Pre-fill withdrawal if available
+                // Pre-fill withdrawal
                 document.getElementById('w-name').value = data.full_name || '';
                 document.getElementById('w-acc').value = data.bank_acc || '';
                 document.getElementById('w-ifsc').value = data.ifsc || '';
+            } else {
+                // If profile is missing (rare bug), create it now
+                const mobile = currentUser.email.replace(DOMAIN_SUFFIX, '');
+                await supabase.from('profiles').insert([{ id: currentUser.id, email: currentUser.email, mobile: mobile, balance: 0 }]);
             }
         }
 
         // --- APP ACTIONS ---
         async function saveProfile() {
             const name = document.getElementById('p-name').value;
-            // Mobile is readonly to prevent auth mismatch, but we can save name
-            
             showLoading(true);
             const { error } = await supabase
                 .from('profiles')
@@ -415,7 +423,6 @@
             const val = document.getElementById('amount-field').value;
             if(val > 0) window.location.href = `upi://pay?pa=${upiId}&pn=Graphy&am=${val}&cu=INR`;
         }
-
     </script>
 </body>
 </html>
